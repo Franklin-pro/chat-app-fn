@@ -4,6 +4,7 @@ import Messages from './Messages'
 import MessageInput from './MessageInput'
 import { TiMessages } from "react-icons/ti";
 import useConversationStore from '../../zustand/useConversation';
+import { useAuthContext } from '../../context/AuthContext';
 
 const MessageContainer = () => {
     const {selectedConversation, setSelectedConversation }= useConversationStore();
@@ -13,9 +14,9 @@ const MessageContainer = () => {
     }, []);
 
   return (
-    <div className='w-full md:w-[70%] flex flex-col'>
+    <div className='w-full md:w-[70%] sm:w-full max-sm:w-full flex flex-col'>
         {!selectedConversation ? (<NochatSelected/> ):( <>
-        <div className='flex items-center gap-3 bg-slate-500 px-4 py-2 mb-2'>
+        <div className='flex items-center gap-3 bg-white px-4 py-2 mb-2'>
           <img src={selectedConversation.profilePic} alt="" 
            className='w-10 h-10 rounded-full object-cover'
            />
@@ -31,15 +32,16 @@ const MessageContainer = () => {
 export default MessageContainer
 
 const NochatSelected = () => {
-    return (
-      <div className='flex items-center justify-center w-full h-full'>
-          <div className='px-4 text-center sm:text-lg md:text-xl text-gray-200 font-semibold flex flex-col items-center gap-2'>
-              <p>Welcome 👋Franklin</p>
-              <p>Select a chat to start messaging</p>
-              <TiMessages className='text-3xl md:text-6xl text-center'/>
-          </div>
-      </div>
-    )
+  const { authUser } = useAuthContext();
+	return (
+		<div className='flex items-center justify-center w-full h-full'>
+			<div className='px-4 text-center sm:text-lg md:text-xl text-gray-200 font-semibold flex flex-col items-center gap-2'>
+				<p>Welcome 👋 {authUser?.user?.fullName} ❄</p>
+				<p>Select a chat to start messaging</p>
+				<TiMessages className='text-3xl md:text-6xl text-center' />
+			</div>
+		</div>
+	);
   }
   
 
